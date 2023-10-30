@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-function App() {
+import TaskForm from "./componets/TaskForm";
+import TaskList from "./componets/TaskList";
+import TaskListComplete from "./componets/TaskComplete";
+
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+const queryClient = new QueryClient();
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div>
+        <h1>To-Do List</h1>
+        <TaskForm />
+        <div style={{display:"flex"}}>
+          <div style={{width:"50%"}}>
+            <TaskList />
+          </div>
+          <div style={{width:"50%"}}>
+            <TaskListComplete />
+          </div>
+        </div>
+      </div>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
