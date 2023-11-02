@@ -1,61 +1,65 @@
-import { Engine } from "json-rules-engine";
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { useQuery } from 'react-query';
+import hashIt from 'hash-it';
+const { Engine } = require('json-rules-engine');
 
-const engine = new Engine();
-const evaluateRules = (task, rules) => {
-    // rules.forEach(rule => {
-        console.log(rules);
-        engine.addRule(rules); 
-    // });
-  
-    engine.run(task).then(events => {
-      console.log("Rule evaluation events: ", events); 
-    //   events.map(event => {
-    //     if (event.type === "notification") {
-    //      return  console.log("Notification Event Triggered: ", event.params.message);
-    //     }
-    //   });
-    // }).catch(error => {
-    //   console.error("Error running rules: ", error);
-    });
-    
-  };
-  
-
-// const evaluateRules = (task, rules) => {
-//     rules.forEach(rule => {
-//         engine.addRule(rule); 
-//     });
-
-//     engine.run(task).then(events => {
-//         events.map(event => {
-//             if (event.type === "notification") {
-//                 console.log(event.params.message.red);
-//             }
-//         });
-//     }).catch(error => {
-//         console.error("Error running rules: ", error);
-//     });
-// };
-
-const priorityRules = 
-    {
-      conditions: {
-        all: [
-          {
-            fact: "dueTime",
-            operator: "equal",
-            value: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-          }
-        ]
+const TaskComponent = () => {
+  const priorityRules = {
+    conditions: {
+      all: [
+        {
+          fact: 'dueTime',
+          operator: 'equal',
+          value: ('0' + new Date().getHours()).slice(-2) + ':' + ('0' + new Date().getMinutes()).slice(-2),
+        },
+      ],
+    },
+    event: {
+      type: 'notification',
+      params: {
+        message: 'Task due now! Please complete it.',
       },
-      event: {
-        type: "notification",
-        params: {
-          message: "Task due now! Please complete it."
-        }
-      }
-    }
-  
-  
+    },
+  };
 
-export { evaluateRules, priorityRules };
+  const fetchTasks = async () => {
+    const response = await axios.get('http://localhost:8000/task');
+    return response.data;
+  };
+
+  const { data: tasks, isLoading, isError } = useQuery('tasks', fetchTasks, {
+    refetchInterval: 1000,
+    refetchOnWindowFocus: true,
+  });
+  
+  useEffect(() => {
+      if (!isLoading && !isError && tasks) {
+        const pendingTask = tasks.filter(task => task.completed === false&& task.dueTime>('0' + new Date().getHours()).slice(-2) + ':' + ('0' + new Date().getMinutes()).slice(-2));
+      const engine = new Engine();
+ 
+
+      console.log(pendingTask);
+      
+    //   pendingTask.forEach(task => {
+        // pendingTask[0]?.dueTime, 
+        const fact = {
+          dueTime: ('0' + new Date().getHours()).slice(-2) + ':' + ('0' + new Date().getMinutes()).slice(-2)
+        };
+        const fact2 =hashIt(fact)
+        engine.addRule(priorityRules);
+        engine.run(fact2).then(results => {
+          console.log(results.events[0]?.params.message);
+          // Perform any further actions based on the rule evaluation results here
+        }).catch(error => {
+          console.error(error);
+        });
+    //   }
+    //   );
+    }
+  }, [tasks, isLoading, isError]);
+
+  return""
+};
+
+export default TaskComponent;

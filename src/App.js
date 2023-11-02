@@ -4,7 +4,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import TaskForm from "./componets/TaskForm";
 import TaskList from "./componets/TaskList";
 import TaskListComplete from "./componets/TaskComplete";
-
+import RuleEngine from "./componets/RuleEngine"
+ 
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => {
           <div style={{width:"50%"}}>
             <TaskListComplete />
           </div>
+        <RuleEngine />
         </div>
       </div>
     </QueryClientProvider>

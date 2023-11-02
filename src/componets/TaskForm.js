@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
-import { evaluateRules, priorityRules } from "./RuleEngine";
+
 
 
 const importanceOptions = ["Low", "Medium", "High"]; 
@@ -28,14 +28,17 @@ const TaskForm = () => {
     }
   });
 
+
+
  
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    evaluateRules(task, priorityRules);
+  
+  
      mutation.mutate(task);
     setTask({
       description: "",
-      dueTime: '',
+      dueTime: "",
       importance: "",
       category: "",
       completed: false
@@ -60,7 +63,7 @@ const TaskForm = () => {
        <label>
         Due Time:
         <input
-          type="time" // Use type="time" for time input
+          type="time"
           value={task.dueTime}
           onChange={e => setTask({ ...task, dueTime: e.target.value })}
         />
