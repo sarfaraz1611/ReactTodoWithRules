@@ -10,7 +10,7 @@
     "axios": "^1.6.0",
     "colors": "^1.4.0",
     "hash-it": "^6.0.0",
-    "json-rules-engine": "^6.4.2",
+    "json-rules-engine": "^6.5.0",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
