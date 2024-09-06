@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/jest-dom": "^6.1.6",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "autoprefixer": "^10.4.16",
-    "axios": "^1.6.0",
+    "axios": "^1.6.8",
     "colors": "^1.4.0",
     "hash-it": "^6.0.0",
     "json-rules-engine": "^6.4.2",
